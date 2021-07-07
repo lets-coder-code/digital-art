@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Art</title>
+    <style>
+      .blue {
+        color: blue;
+      }
+      img {
+        width: 15rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+      let infoArray = [
+        {
+          id: "0",
+          title: "Pink and Blue",
+          src: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGlnaXRhbCUyMGFydHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        },
+        {
+          id: "1",
+          title: "Woman with Book",
+          src: "https://images.unsplash.com/photo-1597547479508-1933bd857656?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZGlnaXRhbCUyMGFydHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        },
+        {
+          id: "2",
+          title: "The Modern Duck",
+          src: "https://images.unsplash.com/photo-1564800718579-749680044765?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGRpZ2l0YWwlMjBhcnR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        },
+        {
+          id: "3",
+          title: "Shadow Man",
+          src: "https://images.unsplash.com/photo-1501023956373-055b874f2929?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZGlnaXRhbCUyMGFydHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        },
+        {
+          id: "4",
+          title: "Fruits",
+          src: "https://images.unsplash.com/photo-1564979005419-d0c60df1488b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGRpZ2l0YWwlMjBhcnR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        },
+        {
+          id: "5",
+          title: "Architecture",
+          src: "https://images.unsplash.com/photo-1565843123343-198c4c308b72?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fGRpZ2l0YWwlMjBhcnR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+        },
+      ];
+
+      const App = document.getElementById("app");
+
+      /*********************** Normal JS code ***************************/
+
+      /* const Title = () => {
+        return "Digital Art Gallery";
+      };
+
+      let titleContainer = document.createElement("div");
+      titleContainer.classList.add("blue");
+      titleContainer.innerHTML = `<h1>${Title()}</h1>`;
+
+      App.appendChild(titleContainer);
+
+      const ArtElement = (props) => {
+        return `<img src="${props.src}" alt="random-image"/>
+      </div>`;
+      };
+
+      let mainContainer = document.createElement("div");
+
+      infoArray.forEach((infoElement) => {
+        let artContainer = document.createElement("div");
+        artContainer.innerHTML = ArtElement(infoElement);
+        mainContainer.appendChild(artContainer);
+      });
+
+      App.appendChild(mainContainer); */
+
+      /************************* React code ********************************/
+
+      /* const create = React.createElement; */
+
+      const useState = React.useState;
+
+      /* const ReactTitle = () => {
+        let className = "blue";
+        return create("h1", { className }, "Digital Art Gallery");
+      }; */
+
+      const ReactTitle = () => {
+        return <h1 className="blue">Digital Art Gallery</h1>;
+      };
+
+      /* const ReactArtElement = (props) => {
+        let src = props.src;
+        return create("img", { src });
+      }; */
+
+      const ReactArtElement = (props) => {
+        return <img src={props.src} />;
+      };
+
+      /* const ReactArtCollection = () => {
+        let artElements = [];
+
+        infoArray.forEach((infoElement) => {
+          let newArtElement = create(
+            "div",
+            { key: infoElement.id },
+            create(ReactArtElement, {
+              key: infoElement.id,
+              src: infoElement.src,
+            })
+          );
+          artElements.push(newArtElement);
+        });
+
+        return create("div", null, artElements);
+      }; */
+
+      const ReactArtCollection = () => {
+        let [state, setState] = useState("no element");
+        return (
+          <div>
+            <p>You have chosen: {state}</p>
+            {infoArray.map((infoElement) => {
+              return (
+                <div
+                  key={infoElement.id}
+                  onClick={(event) => {
+                    setState(infoElement.title);
+                  }}
+                >
+                  <ReactArtElement src={infoElement.src} key={infoElement.id} />
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
+
+      /* ReactDOM.render(
+        create("div", null, [
+          create("div", { key: "title" }, create(ReactTitle)),
+          create("div", { key: "art-collection" }, create(ReactArtCollection)),
+        ]),
+        App
+      ); */
+
+      ReactDOM.render(
+        <div>
+          <ReactTitle />
+          <ReactArtCollection />
+        </div>,
+        App
+      );
+    </script>
+  </body>
+</html>
